@@ -13,8 +13,6 @@ img {
 a {
   color: #FFD700;
   text-decoration: none;
-}
-
-.center {
-  text-align: center;
+  display: block;
+  margin: auto; 
 }
