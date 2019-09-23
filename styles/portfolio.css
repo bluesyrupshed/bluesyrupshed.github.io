@@ -1,13 +1,14 @@
-body {
-    background-color: rgb(0,0,0);
-    list-style: none;
-}
-
 img {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 40%;
+  width: 22.5%;
+  height: 22.5%;
+}
+
+body {
+    background-color: rgb(0,0,0);
+    list-style: none;
 }
 
 a {
@@ -15,8 +16,4 @@ a {
   text-decoration: none;
   display: block;
   margin: auto; 
-}
-
-li {
-  display: inline
 }
