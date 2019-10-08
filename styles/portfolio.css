@@ -17,3 +17,8 @@ a {
   display: block;
   margin: auto; 
 }
+
+ .box{
+    float:center;
+    margin-right:20px;
+}
