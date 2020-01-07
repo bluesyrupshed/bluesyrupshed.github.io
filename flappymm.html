@@ -1,0 +1,211 @@
+<!DOCTYPE html w/ Processing>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Flappy Clone</title>
+    <link rel="shortcut icon" type="image/x-icon" href="computer favicon.png">
+    <script type="text/javascript" src="./js/processing.js"></script>
+</head>
+
+<body>
+  <center><li><a href="index.html">Home Page</a></li></center>
+       <center><li><a href="portfolio.html">Portfolio</a></li></center>
+       <li><a href="about.html">About</a></li>
+       <center><a href="flappymm.html">Flappy Clone</a></center>
+        <center><a href="clickball.html">Clickball Game</a></center>
+    <center>
+        <h1>Processing Game - Flappy Megaman</h1>
+    </center>
+    <center>
+        <p></p>
+    </center>
+
+    <script type="text/processing">
+
+      PImage bg, megaman, topPipe, bottomPipe;
+int bgx, bgy, mx, my, g, Vmy;
+int[] pipeX, pipeY;
+int gameState, score, highScore;
+
+void setup()
+{
+  size(800, 620);
+  bg = loadImage("./img/megamanbg.jpg");
+  megaman = loadImage("./img/megaman.png");
+  bottomPipe = loadImage("./img/bottompipe.png");
+  topPipe = loadImage("./img/toppipe.png");
+  mx = 100;
+  my = 50;
+  g = 1;
+  pipeX = new int[5];
+  pipeY = new int[pipeX.length];
+
+  for (int i = 0; i < pipeX.length; i++)
+  {
+    pipeX[i] = width + 200*i;
+    pipeY[i] = (int)random(-350, 0);
+  } 
+  gameState = -1;
+}
+
+void draw()
+{
+  if (gameState == -1)
+  {
+    startScreen();
+  } else if (gameState==0)
+  {
+    setBg();
+    setPipes();
+    megaman(); //PUTS KIRBY ON TOP -- Draws him last
+    displayScore();
+  } else
+  {
+    endScreen();
+    restart();
+  }
+}
+
+void endScreen()
+{
+  fill(150, 150, 250, 100);
+  if (mouseX > 90 && mouseX < 595 && mouseY > 150 && mouseY < 290)
+  {
+    fill(150, 250, 150, 100);
+  }
+  rect(90, 150, 505, 140, 5);
+  fill(0);
+  textSize(40);
+  text("Megaman died     : (", 200, 200);
+  text("Click HERE to play again.", 100, 270);
+}
+
+void restart()
+{
+  // CHECK TO MAKE SURE THE MOUSE IS IN THE 'BOX'
+  if (mouseX > 90 && mouseX < 595 && mouseY > 150 && mouseY < 290)
+  {
+
+    if (mousePressed)
+    {
+      my = height/2;
+      for (int i = 0; i < pipeX.length; i++)
+      {
+        pipeX[i] = width + 200*i;
+        pipeY[i] = (int)random(-350, 0);
+      }      
+      score = 0;
+      gameState = 0;
+    }
+  }
+}
+void displayScore()
+{
+  if (score>highScore)
+  {
+    highScore = score;
+  }
+  //Background for ScoreBoard
+  fill(160, 160, 160, 200); //Last# is opacity (Clearness)
+  rect(width-175, 10, 155, 80, 5);
+  fill(0);
+  textSize(32);
+  text("Score: " + score, width - 170, 40);  
+  text("High:  " + highScore, width - 170, 80);
+}
+
+void startScreen()
+{
+  image(bg, 0, 0);
+  textSize(45);
+  text("Welcome to Flappy Bird!", 40, 100);
+  text("Click the mouse to begin...", 40, 200);
+  if (mousePressed)
+  {
+    my = height/2;
+    gameState = 0;
+  }
+}
+
+void setPipes()
+{
+  // moves the Pipes
+  for (int i = 0; i < pipeX.length; i++)
+  {
+    image(topPipe, pipeX[i], pipeY[i]);
+    image(bottomPipe, pipeX[i], pipeY[i] + 680);
+    pipeX[i]-= 2;
+    if (score > 10)
+    {
+      pipeX[i]--;  // speed up at 10 points
+    }
+    if (score > 20)
+    {
+      pipeX[i]--;  // second speed up at 20 points
+    }
+    if (pipeX[i] < -200)
+    {
+      pipeX[i] = width;
+    }
+
+    // check for collision
+    if (mx > (pipeX[i]-58) && mx < pipeX[i] + 96)
+    {
+
+      if (!(my > pipeY[i] + 250 && my < pipeY[i] + (449 + 231)))
+      {
+        fill(255, 0, 0, 200);
+        textSize(24);
+        rect(20, height - 223, 455, 32);
+        fill(0);
+        text("Megaman hit a pipe", 20, height - 200);      
+        gameState = 1;
+      } else if (mx==pipeX[i] || mx == pipeX[i] + 1)
+      {
+        score++;
+      }
+    }
+  }
+}
+
+
+void megaman()
+{
+  image(megaman, mx, my);
+  my = my + Vmy;
+  Vmy = Vmy + g;  
+  if (my > height || my < 0)
+  {
+    fill(255, 0, 0, 140);
+    textSize(24);
+    text("Megaman fell off the screen", 20, 44);
+    gameState=1;
+  }
+}
+
+void mousePressed()
+{
+  Vmy = -15;
+}
+
+void setBg()
+{
+  image(bg, bgx, bgy);
+  image(bg, bgx + bg.width, bgy);
+  bgx--;
+  if (bgx < -bg.width)
+  {
+    bgx = 0;
+  }
+}
+
+
+
+    </script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+
+</body>
+
+</html>

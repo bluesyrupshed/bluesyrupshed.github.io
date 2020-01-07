@@ -1,0 +1,112 @@
+<!DOCTYPE html w/ Processing>
+
+<html>
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Clickball</title>
+      <link rel="shortcut icon" type="image/x-icon" href="computer favicon.png">
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+  
+  <body>
+    <center><li><a href="index.html">Home Page</a></li></center>
+       <center><li><a href="portfolio.html">Portfolio</a></li></center>
+       <center><li><a href="about.html">About</a></li></center>
+       <center><li><a href="flappymm.html">Flappy Clone</a></li></center>
+        <center><li><a href="clickball.html">Clickball Game</a></li></center>
+    <h1>Welcome to Clickball!</h1>
+    <p>e n j o y</p>
+    
+    <script type="text/processing">
+int gameState;
+float circleX;
+float xspeed = 5;
+float y = random(0,50);
+float gravity =50;
+float scoreX;
+int lives = 5;
+boolean lost=false;
+void setup(){
+size(600,800);
+gameState=0;
+circleX = random(0,50);
+}
+void draw(){
+background(0);
+  if(gameState==0 ){
+    startScreen();
+  }
+  else if(gameState==1){
+ text("Score = "+scoreX,50,50); //Score
+  
+  fill(255);
+  ellipse(circleX,y,100,100);
+  fill(255,0,0);
+  ellipse(circleX,y,75,75);
+  fill(255);
+  ellipse(circleX,y,50,50);
+  fill(255,0,0);
+  ellipse(circleX,y,25,25);
+  circleX=circleX +xspeed;
+  }
+  if (circleX > width){
+    xspeed=-5;
+    y=y + 50;
+  }
+  if(circleX < 0){
+  xspeed = 5;
+  }
+  if(y>795){
+  y=0;
+  }
+}
+void mousePressed(){
+ text("Score = "+scoreX,50,50); //Score
+  if(dist(mouseX,mouseY,circleX,y)<=50){
+    scoreX = scoreX + 1;
+  }
+  else {
+  lives=lives-1;
+  }
+  if(lost==true){
+    gameState=0;
+    lives=5;
+    scoreX=0;
+    lost=false;
+    loop();
+  }
+  if(lives<=0){
+  lost=true;
+  noLoop();
+  }
+}
+void startScreen(){
+  textSize(40);
+  fill(255);
+  text("Welcome to Clickball ", 50, 100);
+    if(mouseX >75 && mouseX < 375 && mouseY < 310 && mouseY > 260){
+    fill(66, 245, 239);
+    if(mousePressed){
+      gameState=1;
+    }
+  }
+  else
+  {
+  fill(255, 255, 255);
+  }
+  rect(75, 310, 300,-50, 15);
+  fill(0);
+  text("Click to start", 100, 300);
+  fill(255);
+  text("How to play the game", 100, 400 );
+  textSize(20);
+  text("Click the ball, If you do not you loes a life so click the ball", 0, 500);
+  text(" You only have three lives so try to get the high score", 0, 520);
+}
+    </script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+    
+  </body>
+  
+</html>
